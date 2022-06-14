@@ -4,7 +4,7 @@ from chatterbot.trainers import ListTrainer
 import pyttsx3
 import speech_recognition as sr  
 
-class ChatBot():
+class Chatbot():
       
     #iniciando a engine que capta a voz do usuário
     rec = sr.Recognizer()
@@ -33,44 +33,10 @@ class ChatBot():
             'Bro', 'Bro...'
         ])
 
-    def initConversation(rec, bot, speak):
-
-        #laço de repetição para uma conversa contínua
-        print("Digite alguma coisa: ")
-        while True:
-            texto = input("Você: ")
-            
-            if(texto == "tchau"):
-                break
-            else:
-                resp = bot.get_response(texto)
-                print('Bot: ', resp)
-                        
-                #sintetiza a voz e a reproduz
-                speak.say(resp)
-                speak.runAndWait()
-                  
-            #with sr.Microphone() as fonte:
-            #    rec.adjust_for_ambient_noise(fonte)
-            #    frase = rec.listen(fonte)
-            #    texto = rec.recognize_sphinx(frase, language='pt-Br')
-            #    print("Você: ", texto)
-            #    
-            #    if(texto == "tchau"):
-            #        break
-            #    else:
-            #        resp = bot.get_response(texto)
-            #        print('Bot: ', resp)
-            #            
-            #        #sintetiza a voz e a reproduz
-            #        speak.say(resp)
-            #        speak.runAndWait()
-
         return 0
     
     initBot()
     trainBot(initBot())
-    initConversation(rec, initBot(), speak)
 
 
 
