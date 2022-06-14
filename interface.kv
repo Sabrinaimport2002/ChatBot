@@ -24,6 +24,14 @@
 <HomeScreen>:
     BoxLayout:
         orientation: 'vertical'
+        ActionBar: 
+            ActionView:
+                ActionPrevious: 
+                    title: 'Chatbot'
+                    on_release: app.root.current = 'menuinitial'
+                ActionButton:
+                    text: 'Sair'
+                    on_release: app.stop()
         ScrollView:
             BoxLayout:
                 id:box

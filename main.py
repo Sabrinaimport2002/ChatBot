@@ -2,6 +2,7 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.core.window import Window
 
 
 class Manager(ScreenManager):
@@ -15,6 +16,20 @@ class HomeScreen(Screen):
         super().__init__(**kwargs)
         for tarefa in tarefas:
             self.ids.box.add_widget(Message(text=tarefa))
+    
+    #implementa o esc para voltar
+    def on_pre_enter(self):
+        Window.bind(on_keyboard=self.back)
+
+    #implementa o esc para voltar
+    def back(self, window, key, *args):
+        if key == 27:
+            App.get_running_app().root.current = 'menuinitial'
+            return True
+
+    #implementa o esc para voltar
+    def on_pre_leave(self):
+        Window.unbind(on_keyboard=self.back)
 
     # método que permite adicionar labels dinamicamente
     def addWidget(self):
