@@ -34,25 +34,21 @@ class HomeScreen(Screen):
 
     speak = pyttsx3.init('sapi5')
 
-    # método que utiliza o chatbot
-    def mensagem(self, msg, *args):     
-        self.ids.box.add_widget(Message(text=msg))   
-        
-        if(msg == "tchau"):
-            self.on_pre_leave()
-        else:
-            resp = str(self.bot.get_response(msg))
-            self.ids.box.add_widget(Message(text=resp))
-            self.ids.texto.text = ''
-                        
-        #sintetiza a voz e a reproduz
-        #self.speak.say(resp)
-        #self.speak.runAndWait()
-    
     def __init__ (self, tarefas=[], **kwargs):
         super().__init__(**kwargs)
         for tarefa in tarefas:
             self.ids.box.add_widget(Message(text=tarefa))
+
+    # método que utiliza o chatbot
+    def mensagem(self, msg, *args):     
+        self.ids.box.add_widget(Message(text=msg))   
+        
+        #sintetiza a voz e a reproduz
+        resp = str(self.bot.get_response(msg))
+        self.speak.say(resp)
+        self.speak.runAndWait() 
+        self.ids.box.add_widget(Message(text=resp))
+        self.ids.texto.text = ''
     
     #implementa o esc para voltar
     def on_pre_enter(self):
