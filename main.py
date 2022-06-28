@@ -1,4 +1,5 @@
 #import kivy
+from logging import exception
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -6,6 +7,7 @@ from kivy.core.window import Window
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 import pyttsx3
+import speech_recognition as sr
 
 class Manager(ScreenManager):
     pass
@@ -29,10 +31,12 @@ class HomeScreen(Screen):
         'Como vai seu aprendizado?', 'Ainda em estágio inicial...',
         'Mas e seu coração?', 'Ainda machucado...',
         'Bro', 'Bro...',
-        'tchau', 'Tchau!, Até a próxima :)'
+        'tchau', 'Tchau!, Até a próxima :)',
+        'Não Identificado', 'Diga Novamente!'
     ])
 
     speak = pyttsx3.init('sapi5')
+    rec = sr.Recognizer()
 
     def __init__ (self, tarefas=[], **kwargs):
         super().__init__(**kwargs)
@@ -50,6 +54,18 @@ class HomeScreen(Screen):
         self.ids.box.add_widget(Message(text=resp))
         self.ids.texto.text = ''
     
+    def mensagem_audio(self, *args):
+        with sr.Microphone() as fonte:
+            frase = self.rec.listen(fonte)
+            texto = self.rec.recognize_google(frase, language='pt')            
+        
+        self.ids.box.add_widget(Message(text=texto)) 
+        resp = str(self.bot.get_response(texto))
+        self.speak.say(resp)
+        self.speak.runAndWait() 
+        self.ids.box.add_widget(Message(text=resp))
+        self.ids.texto.text = ''
+
     #implementa o esc para voltar
     def on_pre_enter(self):
         Window.bind(on_keyboard=self.back)
