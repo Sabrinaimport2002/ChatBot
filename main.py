@@ -93,8 +93,8 @@ class Message(BoxLayout):
         self.ids.label.text = text
 
 #classe main
-class Interface(App):
+class Main(App):
     def build(self):
         return Manager()
-    
-Interface().run()
+
+Main().run()
