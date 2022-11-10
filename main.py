@@ -8,6 +8,10 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 import pyttsx3
 import speech_recognition as sr
+import spacy
+import json 
+
+nlp = spacy.load('en')
 
 class Manager(ScreenManager):
     pass
@@ -16,24 +20,19 @@ class MenuInitial(Screen):
     pass
 
 class HomeScreen(Screen):
-
+    
+    with open("../ChatBot/json2.json") as meu_json:
+        dados=json.load(meu_json)
+    
     bot = ChatBot(
             'Chatbot do Poderoso',
-            logic_adapters=[
-            'chatterbot.logic.BestMatch'],
         )
     
     list = ListTrainer(bot)
     list.train(
-    [
-        'Oi','Olá',
-        'Tudo bem?','Tudo bem comigo, e com você?',
-        'Como vai seu aprendizado?', 'Ainda em estágio inicial...',
-        'Mas e seu coração?', 'Ainda machucado...',
-        'Bro', 'Bro...',
-        'tchau', 'Tchau!, Até a próxima :)',
-        'Não Identificado', 'Diga Novamente!'
-    ])
+        dados
+    )
+
 
     speak = pyttsx3.init('sapi5')
     rec = sr.Recognizer()
