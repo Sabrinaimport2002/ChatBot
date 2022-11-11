@@ -5,21 +5,50 @@
         name: 'homescreen'
 
 <MenuInitial>:
+    canvas.before:
+        Color:
+            rgba: 127, 0, 255, 0.10
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
     BoxLayout:
         orientation: 'vertical'
-        padding: 150
-        spacing: 25
+        padding: 130
+        spacing: 30
         Image:
             source: 'images/chatbot.png'
             size_hint_y: None
-            height: 220
+            height: 160
+            width: 160
             allow_stretch: True
-        Button:
+        
+        RoundedButton:
             text: 'Comece a Conversar!'
             on_release: app.root.current = 'homescreen'
-        Button:
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            height: 150
+            width: 150
+
+        RoundedButton:
             text: 'Sair do Aplicativo'
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
             on_release: app.stop()
+
+<RoundedButton@Button>
+	background_color: (0,0,0,0)
+	background_normal: ''
+	canvas.before:
+		Color:
+			rgba: (48/255,84/255,150/255,1)
+		RoundedRectangle:
+			size: self.size
+			pos: self.pos
+			radius: [30]
 
 <HomeScreen>:
     BoxLayout:
@@ -40,28 +69,45 @@
                 height: self.minimum_height
         BoxLayout:
             size_hint_y: None
+            padding_horizontal: 20
             height: 50
             TextInput:
                 id: texto
-            Button:
+            RoundedButton:
                 text:'>'
                 size_hint_x: None
                 width: 50
                 on_release: root.mensagem(texto.text)
-            Button:
-                text:'AUDIO'
+                rgba: (48/255,84/255,150/255,1)
+            RoundedButton:
+                text:'MIC'
                 size_hint_x: None
                 width: 50
                 on_release: root.mensagem_audio(texto.text)
-
+                
 <Message>:
     size_hint_y: None
-    height: 120
+    height: 60
     Label:
         id:label
-        font_size: 30
-    Button:
+        font_size: 20
+        text_size: self.size
+        halign: 'center'
+        valign: 'center'
+        
+    RoundedButtonExclude:
         text: 'X'
         size_hint_x: None
         width: 50
         on_release: app.root.get_screen('homescreen').ids.box.remove_widget(root)
+
+<RoundedButtonExclude@Button>
+	background_color: (0,0,0,0)
+	background_normal: ''
+	canvas.before:
+		Color:
+			rgba: (48/255,84/255,150/255,1)
+		RoundedRectangle:
+			size: self.size
+			pos: self.pos
+			radius: [60]

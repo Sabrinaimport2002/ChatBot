@@ -6,12 +6,9 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
+from chatterbot.trainers import ChatterBotCorpusTrainer
 import pyttsx3
 import speech_recognition as sr
-import spacy
-import json 
-
-nlp = spacy.load('en')
 
 class Manager(ScreenManager):
     pass
@@ -20,21 +17,18 @@ class MenuInitial(Screen):
     pass
 
 class HomeScreen(Screen):
-    
-    with open("../ChatBot/json2.json") as meu_json:
-        dados=json.load(meu_json)
-    
+
     bot = ChatBot(
             'Chatbot do Poderoso',
         )
     
-    list = ListTrainer(bot)
-    list.train(
-        dados
-    )
-
+    list = ChatterBotCorpusTrainer(bot)
+    list.train("./frases/conversas.yml", "./frases/cumprimentos.yml", 
+     "./frases/games.yml", "./frases/proverbs.yml", 
+     "./frases/suggestıons.yml", "./frases/trivia.yml")
 
     speak = pyttsx3.init('sapi5')
+    speak.setProperty("voice", "brazil")
     rec = sr.Recognizer()
 
     def __init__ (self, tarefas=[], **kwargs):
